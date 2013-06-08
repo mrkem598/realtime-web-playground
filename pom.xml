@@ -6,9 +6,9 @@
     <artifactId>realtime-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>realtime-server</artifactId>
+  <artifactId>realtime-web-playground</artifactId>
   <packaging>war</packaging>
-  <url>https://github.com/goodow/realtime-server/</url>
+  <url>https://github.com/goodow/realtime-web-playground/</url>
   <inceptionYear>2013</inceptionYear>
   <licenses>
     <license>
@@ -18,81 +18,14 @@
   </licenses>
   
   <properties>
-    <gae.home>${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
+    <gae.home>${user.home}/.m2/repository/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk/appengine-java-sdk-${gae.version}</gae.home>
   </properties>
 
   <dependencies>
-    <!-- Internal modules -->
-    <dependency>
-      <groupId>com.goodow.realtime</groupId>
-      <artifactId>realtime-channel</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    
     <!-- Google App Engine Compile/runtime dependencies -->
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-api-labs</artifactId>
-    </dependency>
-    <!-- Google App Engine Test Dependencies -->
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-testing</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-api-stubs</artifactId>
-    </dependency>
-    <!-- <dependency>
-      <groupId>com.google.appengine</groupId>
-      <artifactId>appengine-java-sdk</artifactId>
-      <version>${gae.version}</version>
-      <type>zip</type>
-    </dependency> -->
-    
-    <!-- Guice -->
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-servlet</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-multibindings</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject.extensions</groupId>
-      <artifactId>guice-assistedinject</artifactId>
-    </dependency>
-    
-    <!-- Other google libs -->
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client-appengine</artifactId>
-      <version>1.15.0-rc</version>
-    </dependency>
-    
-    <!-- Apache commons -->
-    <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-    </dependency>
-    
-    <!-- Test -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
     </dependency>
   </dependencies>
 
@@ -115,10 +48,6 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>${gae.version}</version>
         <configuration>
-          <jvmFlags>
-            <!-- <jvmFlag>-Xmx1024M</jvmFlag>
-            <jvmFlag>-Xss10M</jvmFlag> -->
-          </jvmFlags>
           <disableUpdateCheck>true</disableUpdateCheck>
         </configuration>
       </plugin>
