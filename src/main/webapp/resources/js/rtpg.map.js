@@ -114,5 +114,5 @@ rtpg.map.connectUi = function() {
 
 
 rtpg.map.connectRealtime = function() {
-  rtpg.map.field.addEventListener(gdr.EventType.VALUE_CHANGED, rtpg.map.onRealtime);
+  rtpg.map.field.addEventListener(good.realtime.EventType.VALUE_CHANGED, rtpg.map.onRealtime);
 };

@@ -94,7 +94,6 @@ rtpg.onFileLoaded = function(doc) {
     demo.connectUi();
     demo.connectRealtime(doc);
   }
-  
   window.doc = rtpg.realtimeDoc;
   window.mod = doc.getModel();
   window.root = mod.getRoot();
@@ -225,7 +224,7 @@ rtpg.realTimeOptions = {
 rtpg.getCollaborator = function(sessionId) {
   var collaborators = rtpg.realtimeDoc.getCollaborators();
   for (var i = 0; i < collaborators.length; i = i+1) {
-    if(collaborators[i].sessionId == sessionId) {
+    if(collaborators[i].getSessionId() == sessionId) {
       return collaborators[i];
     }
   }
@@ -236,7 +235,7 @@ rtpg.getCollaborator = function(sessionId) {
 rtpg.getMe = function() {
   var collaborators = rtpg.realtimeDoc.getCollaborators();
   for (var i = 0; i < collaborators.length; i = i+1) {
-    if(collaborators[i].isMe) {
+    if(collaborators[i].isMe()) {
       return collaborators[i];
     }
   }

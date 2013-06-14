@@ -39,9 +39,9 @@ rtpg.collaborators.updateUi = function() {
   $(rtpg.collaborators.COLLABORATORS_SELECTOR).empty();
   for (var i = 0; i < collaboratorsList.length; i = i + 1) {
     var collaborator = collaboratorsList[i];
-    var imgSrc = collaborator.photoUrl == null ? 'images/anon.jpeg' : collaborator.photoUrl;
-    var img = $('<img>').attr('src', imgSrc).attr('alt', collaborator.displayName).attr('title', collaborator.displayName + (collaborator.isMe ? " (Me)" : ""));
-    img.css('background-color', collaborator.color);
+    var imgSrc = collaborator.getPhotoUrl() == null ? 'images/anon.jpeg' : collaborator.getPhotoUrl();
+    var img = $('<img>').attr('src', imgSrc).attr('alt', collaborator.getDisplayName()).attr('title', collaborator.getDisplayName() + (collaborator.isMe() ? " (Me)" : ""));
+    img.css('background-color', collaborator.getColor());
     $(rtpg.collaborators.COLLABORATORS_SELECTOR).append(img);
   }
 };
@@ -51,8 +51,8 @@ rtpg.collaborators.connectUi = function() {
 
 rtpg.collaborators.connectRealtime = function(doc) {
   //Adding Listeners for Collaborator events.
-  doc.addEventListener(gdr.EventType.COLLABORATOR_JOINED, rtpg.collaborators.onCollaboratorJoined);
-  doc.addEventListener(gdr.EventType.COLLABORATOR_LEFT, rtpg.collaborators.onCollaboratorLeft);
+  doc.addEventListener(good.realtime.EventType.COLLABORATOR_JOINED, rtpg.collaborators.onCollaboratorJoined);
+  doc.addEventListener(good.realtime.EventType.COLLABORATOR_LEFT, rtpg.collaborators.onCollaboratorLeft);
   rtpg.collaborators.updateUi();
 };
 

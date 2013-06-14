@@ -168,7 +168,7 @@ rtclient.Authorizer.prototype.authorize = function(onAuthComplete) {
 	rtclient.redirectTo(docId, userId, accessToken);
   };
   if(rtclient.params['userId'] && rtclient.params['accessToken']){
-	gdr.authorize(rtclient.params['accessToken'], rtclient.params['userId']);
+	good.realtime.authorize(rtclient.params['accessToken'], rtclient.params['userId']);
 	onAuthComplete();
   }
 
@@ -333,12 +333,12 @@ rtclient.RealtimeLoader.prototype.load = function() {
   // Creating the error callback.
   var authorizer = this.authorizer;
   var handleErrors = function(e) {
-    if(e.type == gdr.ErrorType.TOKEN_REFRESH_REQUIRED) {
+    if(e.type == good.realtime.ErrorType.TOKEN_REFRESH_REQUIRED) {
       authorizer.authorize();
-    } else if(e.type == gdr.ErrorType.CLIENT_ERROR) {
+    } else if(e.type == good.realtime.ErrorType.CLIENT_ERROR) {
       alert("An Error happened: " + e.message);
       window.location.href= "/";
-    } else if(e.type == gdr.ErrorType.NOT_FOUND) {
+    } else if(e.type == good.realtime.ErrorType.NOT_FOUND) {
       alert("The file was not found. It does not exist or you do not have read access to the file.");
       window.location.href= "/";
     }
@@ -347,7 +347,7 @@ rtclient.RealtimeLoader.prototype.load = function() {
 
   // We have a file ID in the query parameters, so we will use it to load a file.
   if (fileId) {
-    gdr.load(fileId, this.onFileLoaded, this.initializeModel, handleErrors);
+    good.realtime.load(fileId, this.onFileLoaded, this.initializeModel, handleErrors);
     return;
   }
 
