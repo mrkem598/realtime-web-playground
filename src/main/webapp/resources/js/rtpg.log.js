@@ -39,7 +39,8 @@ rtpg.log.createLogEntryElement = function(msg) {
 
 
 rtpg.log.logEvent = function(evt, eventType) {
-  var collaborator = evt.getSessionId() == null ? rtpg.getMe() : rtpg.getCollaborator(evt.getSessionId());
+  var collaborator = rtpg.getCollaborator(evt.getSessionId());
+  collaborator = collaborator || rtpg.getMe();
   
   var eventDetails;
   // Collab String events
