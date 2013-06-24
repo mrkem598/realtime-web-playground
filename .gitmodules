@@ -1,0 +1,3 @@
+[submodule "src/main/webapp/good.js"]
+	path = src/main/webapp/good.js
+	url = https://github.com/goodow/good.js

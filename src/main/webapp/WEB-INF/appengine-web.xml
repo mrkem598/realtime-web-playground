@@ -23,7 +23,6 @@
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
   </system-properties>
 
-  <public-root>/resources</public-root>
   <!-- Cache generated GWT files, except nocache files. -->
   <static-files>
     <include path="/**" />
