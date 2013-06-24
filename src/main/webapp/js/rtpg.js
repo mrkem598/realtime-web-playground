@@ -191,6 +191,7 @@ rtpg.start = function() {
   rtpg.realTimeLoader = new rtclient.RealtimeLoader(rtpg.realTimeOptions);
   rtpg.connectUi();
   rtpg.realTimeLoader.start(rtpg.afterAuth);
+  good.realtime.load(document.getElementById('documentId').value, rtpg.onFileLoaded, rtpg.initializeModel, null);
 };
 
 rtpg.afterAuth = function() {

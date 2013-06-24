@@ -33,6 +33,19 @@
   <!-- <script type="text/javascript" src="js/rtpg.custom.js"></script> -->
   <!-- <script type="text/javascript" src="js/rtpg.collaborators.js"></script> -->
   <script type="text/javascript" src="js/rtpg.ui.js"></script>
+  <script src="good.js/closure-library/closure/goog/base.js"></script>
+  <script src="good.js/good/deps.js"></script>
+  <script>
+  	goog.require('good.auth');
+  </script>
+  <script>
+  	good.auth.check();
+  	window.gdrOnLoad = function() {
+      var auth = good.auth.Auth.current;
+      good.realtime.authorize(auth.userId, auth.access_token);
+      rtpg.start();
+  	};
+  </script>
 </head>
 
 
@@ -62,17 +75,17 @@
       </div>
       <div class="rp-section-content">
         <table>
-          <tr>
+          <tr style="display:none">
             <td>User ID</td>
             <td><input type="text" id="userId" value="889452220137502675385"/></td>
           </tr>
-          <tr>
+          <tr style="display:none">
             <td>Access Token</td>
             <td><input type="text" id="accessToken" value="59e77d779ab69874b07d50f3e35d49c90cd68582"/></td>
           </tr>
         </table>
-        To use the Goodow Realtime API Playground you must first
-        <button id="demoAuthorizeButton" disabled="true" class="rp-button rp-button-submit">Authorize</button>
+        To use the Goodow Realtime API Playground you must first Authorize
+        <button id="demoAuthorizeButton" disabled="true" class="rp-button rp-button-submit"  style="display:none">Authorize</button>
         the Playground.
         <div id="authorizedMessage" style="display:none; padding-top: 10px;">
           <span style="font-size: 20px; color: green;">&#10003;</span>
