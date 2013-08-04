@@ -34,13 +34,12 @@ rtpg.log.createLogEntryElement = function(msg) {
     ).append($('<td>').attr('class', 'from').text(msg.eventDetails).prepend($('<b>').text(msg.eventType))
     ).append($('<td>').attr('class', 'message').text('Event at')
     ).append($('<td>').attr('class', 'date').text(rtpg.log.formatDate(new Date(msg.time)))
-    );
+    ).attr('class',msg.isLocal ? 'localEvent' : '');
 };
 
 
 rtpg.log.logEvent = function(evt, eventType) {
   var collaborator = rtpg.getCollaborator(evt.getSessionId());
-  collaborator = collaborator || rtpg.getMe();
   
   var eventDetails;
   // Collab String events
@@ -55,6 +54,9 @@ rtpg.log.logEvent = function(evt, eventType) {
   // Collab List Added events
   } else if (evt.getType() == good.realtime.EventType.VALUES_SET) {
     eventDetails = 'From "' + evt.getOldValues().join(', ') + '" to "' + evt.getNewValues().join(', ') + '" at index ' + evt.getIndex();
+  // Reference Shifted events
+  } else if (evt.type == good.realtime.EventType.REFERENCE_SHIFTED) {
+    eventDetails = 'From ' + evt.getOldIndex() + ' to ' + evt.getNewIndex();
   // Collaborators list events
   } else if (evt.getType() == good.realtime.EventType.COLLABORATOR_JOINED || evt.getType() == good.realtime.EventType.COLLABORATOR_LEFT) {
     eventDetails = evt.getCollaborator().getDisplayName();
@@ -63,11 +65,12 @@ rtpg.log.logEvent = function(evt, eventType) {
   
   var logMessage = {
     eventType: eventType + ': ',
-    picUrl: collaborator.getPhotoUrl() == null ? "images/anon.jpeg" : collaborator.getPhotoUrl(),
-    userName: collaborator.getDisplayName(),
-    color: collaborator.getColor(),
+    picUrl: collaborator == null || collaborator.getPhotoUrl() == null ? "images/anon.jpeg" : collaborator.getPhotoUrl(),
+    userName: collaborator == null ? 'Anonymous' : collaborator.getDisplayName(),
+    color: collaborator == null ? '#58B442' : collaborator.getColor(),
     time: new Date().getTime(),
-    eventDetails: eventDetails
+    eventDetails: eventDetails,
+    isLocal: evt.isLocal
   };
   
   rtpg.log.onLogAdded(logMessage);
@@ -87,6 +90,6 @@ rtpg.log.formatDate = function(date) {
 
 rtpg.log.onLogAdded = function(logMessage) {
   $(rtpg.log.LOG_CONTAINER_SELECTOR).prepend(rtpg.log.createLogEntryElement(logMessage));
-  rtpg.ui.resizeLogs();
+  rtpg.ui.hideShowLocalEvents();
 };
 

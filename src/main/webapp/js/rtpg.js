@@ -90,7 +90,7 @@ rtpg.onFileLoaded = function(doc) {
   for (var i = 0; i < rtpg.allDemos.length; i++) {
     var demo = rtpg.allDemos[i];
     demo.loadField();
-    // demo.updateUi();
+    demo.updateUi();
     demo.connectUi();
     demo.connectRealtime(doc);
   }
@@ -101,10 +101,22 @@ rtpg.onFileLoaded = function(doc) {
   window.list = root.get('demo_list');
   window.map = root.get('demo_map');
   
+  // Activating undo and redo buttons.
+  var model = doc.getModel();
+  $('#undoButton').click(function(){model.undo();});
+  $('#redoButton').click(function(){model.redo();});
+
+  // Add event handler for UndoRedoStateChanged events.
+  var onUndoRedoStateChanged = function(e) {
+    $('#undoButton').prop('disabled', !e.canUndo);
+    $('#redoButton').prop('disabled', !e.canRedo);
+  };
+  model.addEventListener(good.realtime.EventType.UNDO_REDO_STATE_CHANGED, onUndoRedoStateChanged);
+
   // We load the name of the file to populate the file name field.
 //  gapi.client.load('drive', 'v2', function() {
 //    var request = gapi.client.drive.files.get({
-//      'fileId' : rtclient.params['fileId']
+//      'fileId' : rtclient.params['fileIds'].split(',')[0]
 //    });
 //    $('#documentName').attr('disabled', '');
 //    request.execute(function(resp) {
@@ -114,7 +126,7 @@ rtpg.onFileLoaded = function(doc) {
 //        $('#documentName').attr('disabled', '');
 //        var body = {'title': $('#documentName').val()};
 //        var renameRequest = gapi.client.drive.files.patch({
-//          'fileId' : rtclient.params['fileId'],
+//          'fileId' : rtclient.params['fileIds'].split(',')[0],
 //          'resource' : body
 //        });
 //        renameRequest.execute(function(resp) {
@@ -169,14 +181,14 @@ rtpg.popupOpen = function() {
 rtpg.openCallback = function(data) {
   if (data.action == google.picker.Action.PICKED) {
     var fileId = data.docs[0].id;
-    rtclient.redirectTo(fileId, rtpg.realTimeLoader.authorizer.userId);
+    rtpg.realtimeLoader.redirectTo([fileId], rtpg.realtimeLoader.authorizer.userId);
   }
 }
 
 // Popups the Sharing dialog.
 rtpg.popupShare = function() {
   var shareClient = new gapi.drive.share.ShareClient(rtpg.realTimeOptions.appId);
-  shareClient.setItemIds([rtclient.params['fileId']]);
+  shareClient.setItemIds(rtclient.params['fileIds'].split(','));
   shareClient.showSettingsDialog();
 }
 
@@ -188,9 +200,9 @@ rtpg.connectUi = function() {
 
 // Initializes the Realtime Playground.
 rtpg.start = function() {
-  rtpg.realTimeLoader = new rtclient.RealtimeLoader(rtpg.realTimeOptions);
+  rtpg.realtimeLoader = new rtclient.RealtimeLoader(rtpg.realTimeOptions);
   rtpg.connectUi();
-  rtpg.realTimeLoader.start(rtpg.afterAuth);
+  rtpg.realtimeLoader.start();
   good.realtime.load(document.getElementById('documentId').value, rtpg.onFileLoaded, rtpg.initializeModel, null);
 };
 
@@ -201,7 +213,7 @@ rtpg.afterAuth = function() {
   $(rtpg.CREATE_SELECTOR).click(function() {
     $(rtpg.CREATE_SELECTOR).addClass('disabled');
     $(rtpg.OPEN_SELECTOR).addClass('disabled');
-    rtpg.realTimeLoader.createNewFileAndRedirect();
+    rtpg.realtimeLoader.createNewFileAndRedirect();
   });
 }
 
@@ -218,6 +230,8 @@ rtpg.realTimeOptions = {
   initializeModel: rtpg.initializeModel,
   onFileLoaded: rtpg.onFileLoaded,
   registerTypes: rtpg.registerTypes,
+  afterAuth: rtpg.afterAuth,
+  newFileMimeType: null, // Using default.
   defaultTitle: "New Realtime Playground File"
 };
 
