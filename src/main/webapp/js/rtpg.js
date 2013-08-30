@@ -108,8 +108,8 @@ rtpg.onFileLoaded = function(doc) {
 
   // Add event handler for UndoRedoStateChanged events.
   var onUndoRedoStateChanged = function(e) {
-    $('#undoButton').prop('disabled', !e.canUndo);
-    $('#redoButton').prop('disabled', !e.canRedo);
+    $('#undoButton').prop('disabled', !e.canUndo());
+    $('#redoButton').prop('disabled', !e.canRedo());
   };
   model.addEventListener(good.realtime.EventType.UNDO_REDO_STATE_CHANGED, onUndoRedoStateChanged);
 
