@@ -86,6 +86,13 @@ rtpg.onFileLoaded = function(doc) {
   console.log('File loaded');
   console.log(doc);
   rtpg.realtimeDoc = doc;
+  window.doc = rtpg.realtimeDoc;
+  window.mod = doc.getModel();
+  window.root = mod.getRoot();
+  window.str = root.get('demo_string');
+  window.list = root.get('demo_list');
+  window.map = root.get('demo_map');
+  
   // Binding UI and listeners for demo data elements.
   for (var i = 0; i < rtpg.allDemos.length; i++) {
     var demo = rtpg.allDemos[i];
@@ -94,13 +101,6 @@ rtpg.onFileLoaded = function(doc) {
     demo.connectUi();
     demo.connectRealtime(doc);
   }
-  window.doc = rtpg.realtimeDoc;
-  window.mod = doc.getModel();
-  window.root = mod.getRoot();
-  window.str = root.get('demo_string');
-  window.list = root.get('demo_list');
-  window.map = root.get('demo_map');
-  
   // Activating undo and redo buttons.
   var model = doc.getModel();
   $('#undoButton').click(function(){model.undo();});
