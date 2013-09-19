@@ -118,6 +118,8 @@ $(document).ready(function() {
   $('#demoMapKeys').change(rtpg.ui.matchSelectFromKey);
   $('#demoListInput').change(rtpg.ui.matchListValue);
   $('#filterLocal').change(rtpg.ui.hideShowLocalEvents);
+  
+  rtpg.start();
 });
 
 // Loading Tooltips

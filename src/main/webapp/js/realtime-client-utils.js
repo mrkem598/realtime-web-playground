@@ -168,7 +168,6 @@ rtclient.Authorizer.prototype.authorize = function(onAuthComplete) {
 	rtclient.redirectTo(docId, userId, accessToken);
   };
   if(rtclient.params['userId'] && rtclient.params['accessToken']){
-	// good.realtime.setChannel('http://localhost:8888');
 	onAuthComplete();
   }
 

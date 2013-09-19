@@ -18,7 +18,7 @@
   <!-- <script type="text/javascript" src="http://localhost:8888/_ah/channel/jsapi"></script>
   <script type="text/javascript" src="http://localhost:8888/good/realtime/realtime.nocache.js"></script> -->
   <script type="text/javascript" src="http://realtime.goodow.com/ah/channel/jsapi"></script>
-  <script type="text/javascript" src="http://realtime.goodow.com/good/realtime/realtime.nocache.js"></script>
+  <script type="text/javascript" src="http://realtime.goodow.com/good/realtime/realtime.js"></script>
   <script type="text/javascript" src="http://realtime.goodow.com/good/diff_match_patch/diff_match_patch-20121119.cache.js"></script>
   <!-- <script type="text/javascript" src="//www.google.com/jsapi"></script> -->
   <!-- <script type="text/javascript" src="//apis.google.com/js/api.js"></script> -->
@@ -42,12 +42,9 @@
     // var serverAddress = 'http://localhost:8888';
     // good.net.CrossDomainRpc.BASE_URL = serverAddress + '/_ah/api/';
   	good.auth.check();
-  	window.gdrOnLoad = function() {
-      // good.realtime.setServerAddress(serverAddress);
-      var auth = good.auth.Auth.current;
-      good.realtime.authorize(auth.userId, auth.access_token);
-      rtpg.start();
-  	};
+    // good.realtime.setServerAddress(serverAddress);
+    var auth = good.auth.Auth.current;
+    good.realtime.authorize(auth.userId, auth.access_token);
   </script>
 </head>
 
