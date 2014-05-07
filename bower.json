@@ -1,0 +1,15 @@
+{
+  "name": "realtime-web-playground",
+  "description": "Goodow Web Playground helps you to try out the features of the Realtime API",
+  "version": "0.0.0",
+  "homepage": "https://github.com/goodow/realtime-web-playground",
+  "dependencies": {
+    "realtime-channel": "master",
+    "vertxbus": "v2.1RC3",
+    
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.x"
+  }
+}
