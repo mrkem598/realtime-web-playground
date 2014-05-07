@@ -1,0 +1,147 @@
+<html>
+<head>
+  <title></title>
+  <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+  <script src="bower_components/bower-sockjs-client/sockjs.js"></script>
+  <script src="bower_components/vertxbus/vertxbus.js"></script>
+</head>
+<style>
+  .box {
+    background-color: #F0F0F0;
+    border: 4px solid green;
+    width: 400px;
+    height: 300px;
+  }
+
+  .innerbox {
+    overflow: auto;
+    border: 3px solid green;
+    border-left: 0px;
+    border-right: 0px;
+  }
+
+  body {
+    background-color: #F0F0F0;
+  }
+</style>
+
+<body>
+<div >
+  <label>Server: </label>
+  <input type="text" id="server" placeholder="http://host:port/channel" style="width: 250px" />
+  <input type="button" id="connectButton" value="Connect"/>
+</div>
+
+<div id="status" class="box" style="position:absolute;left:0px;top:40px">
+  <input type="button" id="closeButton" value="Close connection"/><br>
+  Connection Status:&nbsp;
+  <div id="status_info">Not connected</div>
+</div>
+
+<div id="subscribe" class="box" style="position:absolute;left:450px;top:40px">
+
+  <form onsubmit="return false;">
+    Address:<input type="text" id="subscribeAddress" value="someaddress"/>
+    <input type="button" id="subscribeButton" value="Subscribe"/>
+  </form>
+  Subscriptions:
+  <div id="subscribed" class="innerbox" style="width: 400px; height: 255px;">
+  </div>
+</div>
+
+<div id="send" class="box" style="position:absolute;left:0px;top:350px">
+
+  <form onsubmit="return false;">
+    Address:<input type="text" id="sendAddress" value="someaddress"/><br>
+    Message:<input type="text" id="sendMessage" value="Hello, World!"/>
+    <input type="button" id="sendButton" value="Send message"/>
+  </form>
+
+  Sent messages:<br>
+  <div id="sent" class="innerbox" style="width: 400px; height: 215px;">
+  </div>
+</div>
+<br>
+
+<div id="receive" class="box" style="position:absolute;left:450px;top:350px">
+
+  Received messages:<br>
+
+  <div id="received" class="innerbox" style="width: 400px; height: 280px;">
+  </div>
+</div>
+
+<script>
+
+  var eb = null;
+
+  function publish(address,  message) {
+    if (eb) {
+      var json = {text: message};
+      eb.publish(address, json);
+      $('#sent').append($("<code>").text("Address:" + address + " Message:" + message));
+      $('#sent').append($("</code><br>"));
+    }
+  }
+
+  function subscribe(address) {
+    if (eb) {
+      eb.registerHandler(address, function(msg, replyTo) {
+        $('#received').append("Address:" + address + " Message:" + msg.text + "<br>");
+      });
+      $('#subscribed').append($("<code>").text("Address:" + address));
+      $('#subscribed').append($("</code><br>"));
+    }
+  }
+
+  function closeConn() {
+    if (eb) {
+      eb.close();
+    }
+  }
+
+  function openConn() {
+	var server = $('#server').val();
+	window.location.hash = '#server='+ server;
+    if (!eb) {
+      eb = new vertx.EventBus(server);
+
+      eb.onopen = function() {
+        $("#status_info").text("Connected");
+      };
+
+      eb.onclose = function() {
+        $("#status_info").text("Not connected");
+        eb = null;
+      };
+    }
+  }
+
+  $(document).ready(function() {
+	var server = "http://realtime.goodow.com:1986/channel";
+	var hash = window.location.hash;
+	if (hash) {
+	  server = hash.substring(hash.indexOf('=') + 1);
+	}
+	$('#server').val(server);
+    $("#sendButton").click(function() {
+      publish($("#sendAddress").val(), $("#sendMessage").val());
+    });
+
+    $("#subscribeButton").click(function() {
+      subscribe($("#subscribeAddress").val());
+    });
+
+    $("#closeButton").click(function() {
+      closeConn();
+    });
+
+    $("#connectButton").click(function() {
+      openConn();
+    });
+  });
+
+</script>
+</body>
+<a href="https://github.com/goodow/realtime-web-playground"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+</html>

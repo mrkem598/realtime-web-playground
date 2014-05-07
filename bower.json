@@ -1,0 +1,12 @@
+{
+  "name": "realtime-web-playground",
+  "description": "Goodow Web Playground helps you to try out the features of the Realtime API",
+  "version": "0.0.0",
+  "homepage": "https://github.com/goodow/realtime-web-playground",
+  "dependencies": {
+    "realtime-channel": "gh-pages",
+    "realtime-store": "gh-pages",
+    "vertxbus": "v2.1",
+    "google-diff-match-patch-js": "1.0.0"
+  }
+}
