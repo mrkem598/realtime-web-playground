@@ -38,7 +38,7 @@
 <body>
 <div >
   <label>Server</label>
-  <input type="text" id="hostname" placeholder="hostname:port" style="width: 250px" />
+  <input type="text" id="server" placeholder="http://host:port" style="width: 250px" />
   <input type="button" id="connect" value="Connect"/>
 </div>
 
@@ -93,7 +93,6 @@
 <script>
 
   var bus = null;
-  var host_input = null;
 
   function publish(address,  message) {
     if (bus) {
@@ -132,10 +131,11 @@
   }
 
   function openConn() {
-    var url = host_input+"/eventbus";
+    var server = $('#server').val();
+    window.location.hash = '#server='+ server;
     if (!bus) {
       var options = {debug:true, forkLocal:true};
-      bus = new good.channel.WebSocketBus(url, options);
+      bus = new good.channel.WebSocketBus(server, options);
       // bus = new good.channel.WebSocketBus("http://data.goodow.com:8080/eventbus", options);
 
       bus.registerHandler("@goodow.bus.onOpen", function(message) {
@@ -155,13 +155,12 @@
   }
 
   $(document).ready(function() {
-    var host = "http://realtime.goodow.com";
+    var server = "https://realtime.goodow.com/eventbus";
     var hash = window.location.hash;
-    if(hash){
-        var param = hash.substring(hash.indexOf('=')+1);
-        host = param;
+    if (hash) {
+      server = hash.substring(hash.indexOf('=') + 1);
     }
-    $('#hostname').val(host)
+    $('#server').val(server);
     $("#sendButton").click(function() {
       publish($("#sendAddress").val(), $("#sendMessage").val());
     });
@@ -178,10 +177,6 @@
       openConn();
     });
     $("#connect").click(function() {
-      host_input = $('#hostname').val();
-      if(host_input!='http://realtime.goodow.com'){
-          window.location.hash = '#server='+ host_input
-      }
       openConn();
     });
   });
