@@ -38,7 +38,7 @@
 <body>
 <div >
   <label>Server</label>
-  <input type="text" id="server" placeholder="http://host:port/eventbus" style="width: 250px" />
+  <input type="text" id="server" placeholder="http://host:port/channel" style="width: 250px" />
   <input type="button" id="connect" value="Connect"/>
 </div>
 
@@ -136,7 +136,6 @@
     if (!bus) {
       var options = {debug:true, forkLocal:true};
       bus = new good.channel.WebSocketBus(server, options);
-      // bus = new good.channel.WebSocketBus("http://data.goodow.com:8080/eventbus", options);
 
       bus.registerHandler("@goodow.bus.onOpen", function(message) {
         $("#status_info").text("Connected");
@@ -155,7 +154,7 @@
   }
 
   $(document).ready(function() {
-    var server = "https://realtime.goodow.com/eventbus";
+    var server = "https://realtime.goodow.com/channel";
     var hash = window.location.hash;
     if (hash) {
       server = hash.substring(hash.indexOf('=') + 1);
@@ -182,6 +181,6 @@
   });
 
 </script>
-<a href="https://github.com/goodow/realtime"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/goodow/realtime-web-playground"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
 </body>
 </html>
