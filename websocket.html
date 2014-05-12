@@ -6,7 +6,7 @@
     if (window.WebSocket) {
         var protocol = location.protocol.lastIndexOf('s:') == location.protocol.length -2 ? "wss:" : "ws:";
         var port = location.port ? (':' + location.port) : '';
-        socket = new WebSocket(protocol + '//' + location.hostname + port + "/eventbus/websocket");
+        socket = new WebSocket(protocol + '//' + location.hostname + port + "/channel/websocket");
         socket.onmessage = function(event) {
             alert("Received data from websocket: " + event.data);
         }

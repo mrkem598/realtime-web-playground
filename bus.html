@@ -18,14 +18,14 @@
 <style>
   .box {
     background-color: #F0F0F0;
-    border: 5px solid blue;
+    border: 4px solid green;
     width: 400px;
     height: 300px;
   }
 
   .innerbox {
     overflow: auto;
-    border: 5px solid blue;
+    border: 3px solid green;
     border-left: 0px;
     border-right: 0px;
   }
@@ -37,13 +37,30 @@
 
 <body>
 <div >
-  <label>Server</label>
+  <label>Server: </label>
   <input type="text" id="server" placeholder="http://host:port/channel" style="width: 250px" />
-  <input type="button" id="connect" value="Connect"/>
+  <input type="button" id="connectButton" value="Connect"/>
 </div>
 
+<div id="status" class="box" style="position:absolute;left:0px;top:40px">
+  <input type="button" id="closeButton" value="Close connection"/><br>
+  Connection Status:&nbsp;
+  <div id="status_info">Not connected</div>
+</div>
 
-<div id="send" class="box" style="position:absolute;left:0px;top:50px">
+<div id="subscribe" class="box" style="position:absolute;left:450px;top:40px">
+
+  <form onsubmit="return false;">
+    Address:<input type="text" id="subscribeAddress" value="someaddress"/>
+    <input type="button" id="subscribeButton" value="Subscribe"/>
+  </form>
+
+  Subscriptions:<br>
+  <div id="subscribed" class="innerbox" style="width: 400px; height: 255px;">
+  </div>
+</div>
+
+<div id="send" class="box" style="position:absolute;left:0px;top:350px">
 
   <form onsubmit="return false;">
     Address:<input type="text" id="sendAddress" value="someaddress"/><br>
@@ -51,43 +68,18 @@
     <input type="button" id="sendButton" value="Send message"/>
   </form>
 
-  <br>
   Sent messages:<br>
-
-  <div id="sent" class="innerbox" style="width: 400px; height: 205px;">
+  <div id="sent" class="innerbox" style="width: 400px; height: 230px;">
   </div>
 </div>
-
-<div id="subscribe" class="box" style="position:absolute;left:450px;top:50px">
-
-  <form onsubmit="return false;">
-    Address:<input type="text" id="subscribeAddress" value="someaddress"/>
-    <input type="button" id="subscribeButton" value="Subscribe"/>
-  </form>
-
-  <br>
-  Subscriptions:<br>
-
-  <div id="subscribed" class="innerbox" style="width: 400px; height: 230px;">
-  </div>
-</div>
-
 <br>
 
-<div id="receive" class="box" style="position:absolute;left:0px;top:400px">
+<div id="receive" class="box" style="position:absolute;left:450px;top:350px">
 
   Received messages:<br>
 
-  <div id="received" class="innerbox" style="width: 400px; height: 275px;">
+  <div id="received" class="innerbox" style="width: 400px; height: 280px;">
   </div>
-
-</div>
-
-<div id="status" class="box" style="position:absolute;left:450px;top:400px">
-  <input type="button" id="connectButton" value="Open connection"/><br>
-  <input type="button" id="closeButton" value="Close connection"/><br>
-  Connection Status:&nbsp;
-  <div id="status_info">Not connected</div>
 </div>
 
 <script>
@@ -173,9 +165,6 @@
     });
 
     $("#connectButton").click(function() {
-      openConn();
-    });
-    $("#connect").click(function() {
       openConn();
     });
   });
