@@ -127,24 +127,24 @@
       var options = {debug:true, forkLocal:true};
       bus = new good.channel.WebSocketBus(server, options);
 
-      bus.registerHandler("@goodow.bus.onOpen", function(message) {
+      bus.registerLocalHandler("@realtime.bus.onOpen", function(message) {
         $("#status_info").text("Connected");
         console.log("Opened at: " + new Date().toString());
       });
 
-      bus.registerHandler("@goodow.bus.onClose", function(message) {
+      bus.registerLocalHandler("@realtime.bus.onClose", function(message) {
         $("#status_info").text("Not connected");
         console.log("Closed at: " + new Date().toString());
       });
       
-      bus.registerHandler("@goodow.bus.onError", function(error) {
+      bus.registerLocalHandler("@realtime.bus.onError", function(error) {
         console.log("Error at: " + error);
       });
     }
   }
 
   $(document).ready(function() {
-    var server = "https://realtime.goodow.com/channel";
+    var server = "http://realtime.goodow.com:1986/channel";
     var hash = window.location.hash;
     if (hash) {
       server = hash.substring(hash.indexOf('=') + 1);
