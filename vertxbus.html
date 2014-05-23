@@ -44,8 +44,7 @@
     Address:<input type="text" id="subscribeAddress" value="someaddress"/>
     <input type="button" id="subscribeButton" value="Subscribe"/>
   </form>
-
-  Subscriptions:<br>
+  Subscriptions:
   <div id="subscribed" class="innerbox" style="width: 400px; height: 255px;">
   </div>
 </div>
@@ -59,7 +58,7 @@
   </form>
 
   Sent messages:<br>
-  <div id="sent" class="innerbox" style="width: 400px; height: 230px;">
+  <div id="sent" class="innerbox" style="width: 400px; height: 215px;">
   </div>
 </div>
 <br>
@@ -119,7 +118,7 @@
   }
 
   $(document).ready(function() {
-	var server = "https://realtime.goodow.com/channel";
+	var server = "http://realtime.goodow.com:1986/channel";
 	var hash = window.location.hash;
 	if (hash) {
 	  server = hash.substring(hash.indexOf('=') + 1);

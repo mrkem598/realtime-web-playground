@@ -1,15 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=9">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
   <title>Goodow Realtime Channel API Playground</title>
-
   <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
   <script src="bower_components/bower-sockjs-client/sockjs.js"></script>
-
   <!-- <script src="bower_components/realtime-channel/gwt.nocache.js"></script> -->
   <script src="bower_components/realtime-channel/realtime-channel.js"></script>
 </head>
@@ -52,8 +45,7 @@
     Address:<input type="text" id="subscribeAddress" value="someaddress"/>
     <input type="button" id="subscribeButton" value="Subscribe"/>
   </form>
-
-  Subscriptions:<br>
+  Subscriptions:
   <div id="subscribed" class="innerbox" style="width: 400px; height: 255px;">
   </div>
 </div>
@@ -67,7 +59,7 @@
   </form>
 
   Sent messages:<br>
-  <div id="sent" class="innerbox" style="width: 400px; height: 230px;">
+  <div id="sent" class="innerbox" style="width: 400px; height: 215px;">
   </div>
 </div>
 <br>
@@ -98,7 +90,7 @@
 
   function subscribe(address) {
     if (bus) {
-      var handlerRegistration = bus.registerHandler(address, function(message) {
+      window.registration = bus.registerHandler(address, function(message) {
         $('#received').append("Address:" + address + " Message:" + JSON.stringify(message.body()) + "<br>");
         var f = function(message) {
           console.log(JSON.stringify(message.body()));
@@ -109,7 +101,7 @@
       $('#subscribed').append($("</code><br>"));
       
       // You can unregister the handler like this:
-      // handlerRegistration.unregisterHandler();
+      // registration.unregister();
     }
   }
 
