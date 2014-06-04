@@ -117,7 +117,7 @@
     window.location.hash = '#server='+ server;
     if (!bus) {
       var options = {debug:true, forkLocal:true};
-      bus = new good.channel.WebSocketBus(server, options);
+      bus = new realtime.channel.WebSocketBus(server, options);
 
       bus.registerLocalHandler("@realtime.bus.onOpen", function(message) {
         $("#status_info").text("Connected");
