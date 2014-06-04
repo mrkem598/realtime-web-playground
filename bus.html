@@ -3,7 +3,7 @@
   <title>Goodow Realtime Channel API Playground</title>
   <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
   <script src="bower_components/bower-sockjs-client/sockjs.js"></script>
-  <!-- <script src="bower_components/realtime-channel/gwt.nocache.js"></script> -->
+  <!--<script src="bower_components/realtime-channel/channel.nocache.js"></script>-->
   <script src="bower_components/realtime-channel/realtime-channel.js"></script>
 </head>
 <style>
@@ -80,9 +80,9 @@
     if (bus) {
       var json = {text: message};
       bus.publish(address, json);
-      /* bus.send(address, json, function(message) {
-    	message.reply({end: "reply"});
-      }); */
+      /*bus.send(address, json, function(message) {
+        message.reply({end: "reply"});
+      });*/
       $('#sent').append($("<code>").text("Address:" + address + " Message:" + JSON.stringify(json)));
       $('#sent').append($("</code><br>"));
     }
