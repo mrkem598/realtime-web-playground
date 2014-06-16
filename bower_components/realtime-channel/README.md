@@ -13,9 +13,10 @@ Install with `bower`:
 bower install realtime-channel
 ```
 
-Add a `<script>` to your `index.html`:
+Add `<script>` tags to your `index.html`:
 
 ```html
+<script src="/bower_components/bower-sockjs-client/sockjs.js"></script>
 <script src="/bower_components/realtime-channel/realtime-channel.js"></script>
 ```
 

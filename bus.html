@@ -91,6 +91,7 @@
   function subscribe(address) {
     if (bus) {
       window.registration = bus.registerHandler(address, function(message) {
+        window.message = message;
         $('#received').append("Address:" + address + " Message:" + JSON.stringify(message.body()) + "<br>");
         var f = function(message) {
           console.log(JSON.stringify(message.body()));
@@ -117,19 +118,19 @@
     window.location.hash = '#server='+ server;
     if (!bus) {
       var options = {debug:true, forkLocal:true};
-      bus = new realtime.channel.WebSocketBus(server, options);
+      bus = new realtime.channel.ReconnectBus(server, options);
 
-      bus.registerLocalHandler("@realtime.bus.onOpen", function(message) {
+      bus.registerLocalHandler("@realtime/bus/onOpen", function(message) {
         $("#status_info").text("Connected");
         console.log("Opened at: " + new Date().toString());
       });
 
-      bus.registerLocalHandler("@realtime.bus.onClose", function(message) {
+      bus.registerLocalHandler("@realtime/bus/onClose", function(message) {
         $("#status_info").text("Not connected");
         console.log("Closed at: " + new Date().toString());
       });
       
-      bus.registerLocalHandler("@realtime.bus.onError", function(error) {
+      bus.registerLocalHandler("@realtime/bus/onError", function(error) {
         console.log("Error at: " + error);
       });
     }

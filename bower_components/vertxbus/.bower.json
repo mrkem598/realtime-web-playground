@@ -6,13 +6,13 @@
   },
   "homepage": "https://github.com/larrytin/bower-vertxbus",
   "license": "Apache 2.0",
-  "_release": "v2.1RC3",
+  "_release": "v2.1",
   "_resolution": {
     "type": "tag",
-    "tag": "v2.1RC3",
-    "commit": "e97283999f3b86f1762c3d4c2851c004371d07bf"
+    "tag": "v2.1",
+    "commit": "d9e1ff03d85bad4b4b6c0d6a22a7367ea7716b84"
   },
   "_source": "git://github.com/larrytin/bower-vertxbus.git",
-  "_target": "v2.1RC3",
+  "_target": "v2.1",
   "_originalSource": "vertxbus"
 }
