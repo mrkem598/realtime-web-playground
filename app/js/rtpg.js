@@ -108,7 +108,7 @@ rtpg.onFileLoaded = function(doc) {
     $('#undoButton').prop('disabled', !e.canUndo);
     $('#redoButton').prop('disabled', !e.canRedo);
   };
-  model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, onUndoRedoStateChanged);
+  model.onUndoRedoStateChanged(onUndoRedoStateChanged);
 
   // We load the name of the file to populate the file name field.
   gapi.client.load('drive', 'v2', function() {

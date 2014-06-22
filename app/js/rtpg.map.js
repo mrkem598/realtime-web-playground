@@ -114,5 +114,5 @@ rtpg.map.connectUi = function() {
 
 
 rtpg.map.connectRealtime = function() {
-  rtpg.map.field.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, rtpg.map.onRealtime);
+  rtpg.map.field.onValueChanged(rtpg.map.onRealtime);
 };

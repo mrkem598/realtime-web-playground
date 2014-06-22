@@ -75,8 +75,7 @@ rtpg.list.garbageCollectCursorMap = function () {
       rtpg.list.cursors.delete(keys[i]);
     } else {
       // Create listeners for collaborators that already existed when the document opened
-      rtpg.list.cursors.get(keys[i])
-        .addEventListener(gapi.drive.realtime.EventType.REFERENCE_SHIFTED, rtpg.list.onRealtimeReferenceShifted);
+      rtpg.list.cursors.get(keys[i]).onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
     }
   }
 };
@@ -109,8 +108,7 @@ rtpg.list.onListItemClick = function (evt) {
   // Register Reference
   if(!rtpg.list.field.registeredReference){
     rtpg.list.field.registeredReference = rtpg.list.field.registerReference(index, true);
-    rtpg.list.field.registeredReference
-      .addEventListener(gapi.drive.realtime.EventType.REFERENCE_SHIFTED, rtpg.list.onRealtimeReferenceShifted);
+    rtpg.list.field.registeredReference.onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
     if(rtpg.list.cursors){
       rtpg.list.cursors.set(rtpg.getMe().sessionId, rtpg.list.field.registeredReference);
     }
@@ -216,7 +214,7 @@ rtpg.list.onRealtimeReferenceShifted = function (evt) {
 
 rtpg.list.onRealtimeCursorChange = function (evt) {
   console.log('Cursor Change Event');
-  evt.newValue.addEventListener(gapi.drive.realtime.EventType.REFERENCE_SHIFTED, rtpg.list.onRealtimeReferenceShifted);
+  evt.newValue.onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
   rtpg.list.updateUi();
 };
 
@@ -230,11 +228,11 @@ rtpg.list.connectUi = function() {
 };
 
 rtpg.list.connectRealtime = function() {
-  rtpg.list.field.addEventListener(gapi.drive.realtime.EventType.VALUES_ADDED, rtpg.list.onRealtimeAdded);
-  rtpg.list.field.addEventListener(gapi.drive.realtime.EventType.VALUES_REMOVED, rtpg.list.onRealtimeRemoved);
-  rtpg.list.field.addEventListener(gapi.drive.realtime.EventType.VALUES_SET, rtpg.list.onRealtimeSet);
+  rtpg.list.field.onValuesAdded(rtpg.list.onRealtimeAdded);
+  rtpg.list.field.onValuesRemoved(rtpg.list.onRealtimeRemoved);
+  rtpg.list.field.onValuesSet(rtpg.list.onRealtimeSet);
 
   if(rtpg.list.cursors){
-    rtpg.list.cursors.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, rtpg.list.onRealtimeCursorChange);
+    rtpg.list.cursors.onValueChanged(rtpg.list.onRealtimeCursorChange);
   }
 };

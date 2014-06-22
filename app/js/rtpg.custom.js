@@ -82,7 +82,7 @@ rtpg.custom.initializeModel = function(model) {
 
 rtpg.custom.registerTypes = function() {
   var Movie = rtpg.custom.Movie;
-  var custom = gapi.drive.realtime.custom;
+  var custom = realtime.store.custom;
   custom.registerType(Movie, 'DemoMovie');
   Movie.prototype.name = custom.collaborativeField('name');
   Movie.prototype.director = custom.collaborativeField('director');
@@ -134,6 +134,6 @@ rtpg.custom.connectUi = function() {
 
 rtpg.custom.connectRealtime = function() {
   if(rtpg.custom.field){
-    rtpg.custom.field.addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, rtpg.custom.onRealtimeChange);  
+    rtpg.custom.field.onValueChanged(rtpg.custom.onRealtimeChange);
   }
 };
