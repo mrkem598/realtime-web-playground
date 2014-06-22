@@ -1,5 +1,5 @@
 /**
- * Copyright 2013 Google Inc. All Rights Reserved.
+ * Copyright 2014 Google Inc. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,9 @@ rtpg.ui.matchSelectFromValue = function() {
 }
 
 rtpg.ui.matchListValue = function() {
-  $('#demoListSetContent').val($('#demoListInput').val());
+  var value = $('#demoListInput').val();
+  $('#demoListSetContent').val(value);
+  $('#demoListMove').text('Move ' + value + ' to index');
 }
 
 //Resizing elastic elements on window resize.

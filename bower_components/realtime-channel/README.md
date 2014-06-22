@@ -10,7 +10,7 @@ Please file issues and pull requests against that repo.
 Install with `bower`:
 
 ```shell
-bower install realtime-channel
+bower install realtime-channel#gh-pages
 ```
 
 Add `<script>` tags to your `index.html`:
