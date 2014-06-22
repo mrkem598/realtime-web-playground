@@ -80,6 +80,6 @@ rtpg.string.connectUi = function() {
 };
 
 rtpg.string.connectRealtime = function() {
-  rtpg.string.field.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, rtpg.string.onRealtimeInsert);
-  rtpg.string.field.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, rtpg.string.onRealtimeDelete);
+  rtpg.string.field.onTextInserted(rtpg.string.onRealtimeInsert);
+  rtpg.string.field.onTextDeleted(rtpg.string.onRealtimeDelete);
 };

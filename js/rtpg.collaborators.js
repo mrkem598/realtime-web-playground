@@ -51,8 +51,8 @@ rtpg.collaborators.connectUi = function() {
 
 rtpg.collaborators.connectRealtime = function(doc) {
   //Adding Listeners for Collaborator events.
-  doc.addEventListener(gapi.drive.realtime.EventType.COLLABORATOR_JOINED, rtpg.collaborators.onCollaboratorJoined);
-  doc.addEventListener(gapi.drive.realtime.EventType.COLLABORATOR_LEFT, rtpg.collaborators.onCollaboratorLeft);
+  doc.onCollaboratorJoined(rtpg.collaborators.onCollaboratorJoined);
+  doc.onCollaboratorLeft(rtpg.collaborators.onCollaboratorLeft);
   rtpg.collaborators.updateUi();
 };
 
