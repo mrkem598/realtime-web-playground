@@ -120,23 +120,6 @@ $(document).ready(function() {
   $('#demoMapKeys').change(rtpg.ui.matchSelectFromKey);
   $('#demoListInput').change(rtpg.ui.matchListValue);
   $('#filterLocal').change(rtpg.ui.hideShowLocalEvents);
-});
 
-// Loading Tooltips
-google.setOnLoadCallback(rtpg.start);
-google.load('picker', '1');
-$(function() {
-  $( document ).tooltip({
-    position: {
-      my: "center top+4",
-      at: "center bottom",
-      using: function(position, feedback) {
-        $(this).css( position );
-        $('<div>').addClass('arrow')
-          .addClass(feedback.vertical)
-          .addClass(feedback.horizontal)
-          .appendTo(this);
-      }
-    }
-  });
+  rtpg.start();
 });

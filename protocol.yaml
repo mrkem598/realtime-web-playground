@@ -1,0 +1,14 @@
+# id: playground/0
+---
+demo_string: Edit Me!
+demo_list: [!!str Cat, Dog, Sheep, Chicken]
+demo_cursors:
+- sessionId: !IndexReference {}
+demo_map:
+  "Key 1": !!str Value 1
+  "Key 2": Value 2
+  "Key 3": Value 3
+  "Key 4": Value 4
+---
+- !IndexReference {}
+...
