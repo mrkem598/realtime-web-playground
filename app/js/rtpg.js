@@ -105,8 +105,8 @@ rtpg.onFileLoaded = function(doc) {
 
   // Add event handler for UndoRedoStateChanged events.
   var onUndoRedoStateChanged = function(e) {
-    $('#undoButton').prop('disabled', !e.canUndo);
-    $('#redoButton').prop('disabled', !e.canRedo);
+    $('#undoButton').prop('disabled', !e.canUndo());
+    $('#redoButton').prop('disabled', !e.canRedo());
   };
   model.onUndoRedoStateChanged(onUndoRedoStateChanged);
 
@@ -241,7 +241,7 @@ rtpg.realTimeOptions = {
 rtpg.getCollaborator = function(sessionId) {
   var collaborators = rtpg.realtimeDoc.getCollaborators();
   for (var i = 0; i < collaborators.length; i = i+1) {
-    if(collaborators[i].sessionId == sessionId) {
+    if(collaborators[i].sessionId() == sessionId) {
       return collaborators[i];
     }
   }
@@ -252,7 +252,7 @@ rtpg.getCollaborator = function(sessionId) {
 rtpg.getMe = function() {
   var collaborators = rtpg.realtimeDoc.getCollaborators();
   for (var i = 0; i < collaborators.length; i = i+1) {
-    if(collaborators[i].isMe) {
+    if(collaborators[i].isMe()) {
       return collaborators[i];
     }
   }
