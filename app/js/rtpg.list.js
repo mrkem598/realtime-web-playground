@@ -72,7 +72,7 @@ rtpg.list.garbageCollectCursorMap = function () {
   for(var i = 0, len = keys.length; i < len; i++){
     if(!rtpg.getCollaborator(keys[i])){
       // Delete non existing collaborators
-      rtpg.list.cursors.delete(keys[i]);
+      rtpg.list.cursors.remove(keys[i]);
     } else {
       // Create listeners for collaborators that already existed when the document opened
       rtpg.list.cursors.get(keys[i]).onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
