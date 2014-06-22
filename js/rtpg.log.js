@@ -39,38 +39,38 @@ rtpg.log.createLogEntryElement = function(msg) {
 
 
 rtpg.log.logEvent = function(evt, eventType) {
-  var collaborator = rtpg.getCollaborator(evt.sessionId);
+  var collaborator = rtpg.getCollaborator(evt.sessionId ? evt.sessionId() : null);
   
   var eventDetails;
   // Collab String events
-  if (evt.type == realtime.store.EventType.TEXT_INSERTED || evt.type == realtime.store.EventType.TEXT_DELETED) {
-    eventDetails = '"' + evt.text.replace(/ /g, '\xa0') + '" at index ' + evt.index;
+  if (evt.type() == realtime.store.EventType.TEXT_INSERTED || evt.type() == realtime.store.EventType.TEXT_DELETED) {
+    eventDetails = '"' + evt.text().replace(/ /g, '\xa0') + '" at index ' + evt.index();
   // Collab Map/Custom Objects property changed events
-  } else if (evt.type == realtime.store.EventType.VALUE_CHANGED) {
-    eventDetails = 'Property "' + evt.property + '" changed from "' + evt.oldValue + '" to "' + evt.newValue + '"';
+  } else if (evt.type() == realtime.store.EventType.VALUE_CHANGED) {
+    eventDetails = 'Property "' + evt.property() + '" changed from "' + evt.oldValue() + '" to "' + evt.newValue() + '"';
   // Collab List Added and Deleted events
-  } else if (evt.type == realtime.store.EventType.VALUES_ADDED || evt.type == realtime.store.EventType.VALUES_REMOVED) {
-    eventDetails = '"' + evt.values.join(', ') + '" at index ' + evt.index;
+  } else if (evt.type() == realtime.store.EventType.VALUES_ADDED || evt.type() == realtime.store.EventType.VALUES_REMOVED) {
+    eventDetails = '"' + evt.values().join(', ') + '" at index ' + evt.index();
   // Collab List Added events
-  } else if (evt.type == realtime.store.EventType.VALUES_SET) {
-    eventDetails = 'From "' + evt.oldValues.join(', ') + '" to "' + evt.newValues.join(', ') + '" at index ' + evt.index;
+  } else if (evt.type() == realtime.store.EventType.VALUES_SET) {
+    eventDetails = 'From "' + evt.oldValues().join(', ') + '" to "' + evt.newValues().join(', ') + '" at index ' + evt.index();
   // Reference Shifted events
-  } else if (evt.type == realtime.store.EventType.REFERENCE_SHIFTED) {
-    eventDetails = 'From ' + evt.oldIndex + ' to ' + evt.newIndex;
+  } else if (evt.type() == realtime.store.EventType.REFERENCE_SHIFTED) {
+    eventDetails = 'From ' + evt.oldIndex() + ' to ' + evt.newIndex();
   // Collaborators list events
-  } else if (evt.type == realtime.store.EventType.COLLABORATOR_JOINED || evt.type == realtime.store.EventType.COLLABORATOR_LEFT) {
-    eventDetails = evt.collaborator.displayName;
-    collaborator = evt.collaborator;
+  } else if (evt.type() == realtime.store.EventType.COLLABORATOR_JOINED || evt.type() == realtime.store.EventType.COLLABORATOR_LEFT) {
+    eventDetails = evt.collaborator().displayName();
+    collaborator = evt.collaborator();
   }
   
   var logMessage = {
     eventType: eventType + ': ',
-    picUrl: collaborator.photoUrl == null ? "images/anon.jpeg" : collaborator.photoUrl,
-    userName: collaborator.displayName,
-    color: collaborator.color,
+    picUrl: collaborator.photoUrl() == null ? "images/anon.jpeg" : collaborator.photoUrl(),
+    userName: collaborator.displayName(),
+    color: collaborator.color(),
     time: new Date().getTime(),
     eventDetails: eventDetails,
-    isLocal: evt.isLocal
+    isLocal: evt.isLocal ? evt.isLocal() : false
   };
   
   rtpg.log.onLogAdded(logMessage);

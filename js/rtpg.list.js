@@ -106,11 +106,11 @@ rtpg.list.onListItemClick = function (evt) {
   // Register Reference
   if(!rtpg.list.field.registeredReference){
     rtpg.list.field.registeredReference = rtpg.list.field.registerReference(index, true);
-    rtpg.list.cursors.set(rtpg.getMe().sessionId, rtpg.list.field.registeredReference);
+    rtpg.list.cursors.set(rtpg.getMe().sessionId(), rtpg.list.field.registeredReference);
     rtpg.list.field.registeredReference.onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
   }
 
-  rtpg.list.field.registeredReference.index = index;
+  rtpg.list.field.registeredReference.setIndex(index);
 
   // Set text for move button and set field
   $(rtpg.list.SET_CONTENT_SELECTOR).val($(evt.target).text());
@@ -126,16 +126,16 @@ rtpg.list.updateListItems = function () {
 
   if(rtpg.list.field.registeredReference) {
     listItems.removeClass('active');
-    $(listItems[rtpg.list.field.registeredReference.index])
-      .addClass('active').css('background-color', me.color);
+    $(listItems[rtpg.list.field.registeredReference.index()])
+      .addClass('active').css('background-color', me.color());
   }
 
   for(var i = 0, len = keys.length; i < len; i++){
-    if(keys[i] != me.sessionId){
-      var index = rtpg.list.cursors.get(keys[i]).index;
+    if(keys[i] != me.sessionId()){
+      var index = rtpg.list.cursors.get(keys[i]).index();
       var collaborator = rtpg.getCollaborator(keys[i]);
       $(listItems[index]).addClass('muted');
-      $(listItems[index]).css('background-color', collaborator.color);
+      $(listItems[index]).css('background-color', collaborator.color());
     }
   }
 };
@@ -200,14 +200,14 @@ rtpg.list.connectUi = function() {
 };
 
 rtpg.list.onRealtimeReferenceShifted = function (evt) {
-  var log = rtpg.getCollaborator(evt.sessionId).displayName + ' moved cursor from ' + evt.oldIndex +' to ' + evt.newIndex;
+  var log = rtpg.getCollaborator(evt.sessionId()).displayName() + ' moved cursor from ' + evt.oldIndex() +' to ' + evt.newIndex();
   rtpg.log.logEvent(evt, log);
   rtpg.list.updateUi();
 };
 
 rtpg.list.onRealtimeCursorChange = function (evt) {
   console.log('Cursor Change Event');
-  evt.newValue.onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
+  evt.newValue().onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
   rtpg.list.updateUi();
 };
 

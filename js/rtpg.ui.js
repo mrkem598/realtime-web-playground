@@ -120,11 +120,11 @@ $(document).ready(function() {
   $('#demoMapKeys').change(rtpg.ui.matchSelectFromKey);
   $('#demoListInput').change(rtpg.ui.matchListValue);
   $('#filterLocal').change(rtpg.ui.hideShowLocalEvents);
+
+  rtpg.start();
 });
 
 // Loading Tooltips
-google.setOnLoadCallback(rtpg.start);
-google.load('picker', '1');
 $(function() {
   $( document ).tooltip({
     position: {
