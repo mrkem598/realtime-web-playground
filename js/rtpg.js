@@ -54,9 +54,6 @@ rtpg.getField = function(name) {
 rtpg.INITILIZED_MESSAGE_SELECTOR = '#realtimeInitialized';
 rtpg.COLLAB_HOLDER_SELECTOR = '#collabSections';
 
-// Interval at which we check if the auth token needs to be refreshed in ms
-rtpg.AUTH_TOKEN_REFRESH_INTERVAL =  1800000; // 30 minutes
-
 /**
  * Generates the initial model for newly created Realtime documents.
  * @param model
