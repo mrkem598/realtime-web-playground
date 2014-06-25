@@ -123,20 +123,3 @@ $(document).ready(function() {
 
   rtpg.start();
 });
-
-// Loading Tooltips
-$(function() {
-  $( document ).tooltip({
-    position: {
-      my: "center top+4",
-      at: "center bottom",
-      using: function(position, feedback) {
-        $(this).css( position );
-        $('<div>').addClass('arrow')
-          .addClass(feedback.vertical)
-          .addClass(feedback.horizontal)
-          .appendTo(this);
-      }
-    }
-  });
-});

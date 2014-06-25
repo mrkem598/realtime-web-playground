@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:light,regular,600&subset=cyrillic,latin);
+/*@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:light,regular,600&subset=cyrillic,latin);*/
 /*------------------------------------------------------------------
  eric meyer's reset
  ------------------------------------------------------------------*/
@@ -2198,7 +2198,7 @@ section.disabled {
   margin-right: 4px;
 }
 #demoListMove, #demoListMoveItem {
-  margin: 10px 0;
+  margin: 10px 2px;
 }
 #demoMapKeys {
   margin-right: 0;	
