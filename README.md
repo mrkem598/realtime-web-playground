@@ -1,56 +1,105 @@
-# Google Drive Realtime API Playground
+# Goodow Realtime Store API Playground [![Build Status](https://travis-ci.org/goodow/realtime-web-playground.svg?branch=master)](https://travis-ci.org/goodow/realtime-web-playground)
 
-[![Google Drive Realtime API Playground Screenshot](https://github.com/googledrive/realtime-playground/raw/master/screenshot.png)](https://realtimeplayground.appspot.com/)
+[![Goodow Realtime Store API Playground Screenshot](https://github.com/goodow/realtime-web-playground/raw/master/screenshot.png)](http://realtimeplayground.goodow.com/)
+
 
 ## Overview
 
-**Google Drive Realtime API Playground**, is a web app that helps you to try out the features of the [Google Drive Realtime API](https://developers.google.com/drive/realtime).
+**Goodow Realtime Store API Playground**, is a web app that helps you to try out the features of the [Goodow Realtime Store API](https://github.com/goodow/realtime-store/).
 
-The Playground will take you through the steps required to have the Realtime API working on your application and can be used as a reference implementation of a Google Drive Realtime API application.
+You can try out the Goodow Realtime Store API Playground on its [live instance](http://realtimeplayground.goodow.com/).
 
-You can try out the Google Drive Realtime API Playground on its [live instance](https://realtimeplayground.appspot.com).
+Visit [Google groups](https://groups.google.com/forum/#!forum/goodow-realtime) for discussions and announcements.
 
-## Installation and Configuration
+## Getting Started
 
-The project can run on any static web server, but we also provide required configuration and boilerplate files to host it on App Engine.
+To get you started you can simply clone the realtime-web-playground repository and install the dependencies:
 
-If you wish to host it in your own App Engine instance make sure you set the name of your App Engine application in `/app.yaml`. To create an App Engine instance follow the instructions on [appengine.google.com](https://appengine.google.com).
+### Prerequisites
 
-### Create a Google APIs project and Activate the Drive API
+You need git to clone the realtime-web-playground repository. You can get it from
+[http://git-scm.com/][git].
 
-First, you need to activate the Drive API for your app. You can do it by configuring your API project in the Google APIs Console.
+We also use a number of node.js tools to initialize and test realtime-web-playground. You must have node.js and
+its package manager (npm) installed.  You can get them from [http://nodejs.org/][node].
 
-- Create an API project in the [Google APIs Console](https://code.google.com/apis/console/b/0/?noredirect).
-- Select the "Services" tab and enable the Drive API.
-- Select the "API Access" tab in your API project, and click "Create an OAuth 2.0 client ID".
-- In the Branding Information section, provide a name for your application (e.g. "CollabCube 3D"), and click Next. Providing a product logo is optional.
-- In the Client ID Settings section, do the following:
-  - Select Web application for the Application type
-  - Click the more options link next to the heading, Your site or hostname.
-  - List your hostname in the Authorized Redirect URIs and JavaScript Origins fields.
-  - Click Create Client ID.
-- In the **API Access** page, locate the section **Client ID for Web applications** and note the **Client ID** value.
-- List your hostname in JavaScript origins in the Client ID settings.
-- Go to the **Drive SDK** page and copy the **App ID**.
+### Clone realtime-web-playground
 
-### Setup your App information in the code
+Clone the realtime-web-playground repository using [git][git]:
 
-You should now have your **Client ID** and your **App ID**. In `/js/rtpg.js` change the `APP_ID` and the `CLIENT_ID` constants at the top of the file.
+```
+git clone https://github.com/goodow/realtime-web-playground.git
+cd realtime-web-playground
+```
 
-### Deploy, run that's it!
+### Install Dependencies
 
-## Contributing
+We have two kinds of dependencies in this project: tools and realtime-store library code.  The tools help
+us manage and test the application.
 
-Before creating a pull request, please fill out either the individual or
-corporate Contributor License Agreement.
+* We get the tools we depend upon via `npm`, the [node package manager][npm].
+* We get the realtime-store code via `bower`, a [client-side code package manager][bower].
 
-* If you are an individual writing original source code and you're sure you
-own the intellectual property, then you'll need to sign an
-[individual CLA](http://code.google.com/legal/individual-cla-v1.0.html).
-* If you work for a company that wants to allow you to contribute your work
-to this client library, then you'll need to sign a
-[corporate CLA](http://code.google.com/legal/corporate-cla-v1.0.html).
+We have preconfigured `npm` to automatically run `bower` so we can simply do:
 
-Follow either of the two links above to access the appropriate CLA and
-instructions for how to sign and return it. Once we receive it, we'll add you
-to the official list of contributors and be able to accept your patches.
+```
+npm install
+```
+
+Behind the scenes this will also call `bower install`.  You should find that you have two new
+folders in your project.
+
+* `node_modules` - contains the npm packages for the tools we need
+* `app/bower_components` - contains the realtime-store library files
+
+*Note that the `bower_components` folder would normally be installed in the root folder but
+realtime-web-playground changes this location through the `.bowerrc` file.  Putting it in the app folder makes
+it easier to serve the files by a webserver.*
+
+### Run the Application
+
+The project can run on any static web server, but we also have preconfigured the project with a
+simple development web server.  The simplest way to start this server is:
+
+```
+gulp serve
+```
+
+This outputs an IP address you can use to locally test and another that can be used on devices connected to your network.
+
+
+## Updating Realtime Store
+You can update the tool dependencies by running:
+
+```
+npm update
+```
+
+This will find the latest versions that match the version ranges specified in the `package.json` file.
+
+You can update the Realtime Store dependencies by running:
+
+```
+bower update
+```
+
+This will find the latest versions that match the version ranges specified in the `bower.json` file.
+
+
+## Continuous Integration
+
+### Travis CI
+
+[Travis CI][travis] is a continuous integration service, which can monitor GitHub for new commits
+to your repository and execute scripts such as building the app or running tests. The realtime-web-playground
+project contains a Travis configuration file, `.travis.yml`, which will cause Travis to build and
+deploy the app to Github Pages when you push to GitHub.
+
+You will need to enable the integration between Travis and GitHub. See the Travis website for more
+instruction on how to do this.
+
+[git]: http://git-scm.com/
+[bower]: http://bower.io
+[npm]: https://www.npmjs.org/
+[node]: http://nodejs.org
+[travis]: https://travis-ci.org/

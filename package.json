@@ -2,20 +2,38 @@
   "name": "realtime-web-playground",
   "private": true,
   "version": "0.0.0",
-  "description": "Goodow Web Playground helps you to try out the features of the Realtime API",
   "repository": "https://github.com/goodow/realtime-web-playground",
+  "engines": {
+    "node": ">=0.10.0"
+  },
   "devDependencies": {
-    "karma": "~0.10",
-    "protractor": "~0.20.1",
-    "http-server": "^0.6.1",
     "bower": "^1.3.1",
-    "shelljs": "^0.2.6",
-    "karma-junit-reporter": "^0.2.2"
+    "browser-sync": "^1.1.1",
+    "del": "^0.1.0",
+    "gulp": "^3.6.0",
+    "gulp-autoprefixer": "^0.0.7",
+    "gulp-cache": "^0.2.0",
+    "gulp-csso": "^0.2.6",
+    "gulp-flatten": "^0.0.2",
+    "gulp-if": "^1.2.1",
+    "gulp-imagemin": "^0.6.0",
+    "gulp-jshint": "^1.5.3",
+    "gulp-load-plugins": "^0.5.0",
+    "gulp-minify-html": "^0.1.3",
+    "gulp-replace": "^0.3.0",
+    "gulp-ruby-sass": "^0.5.0",
+    "gulp-size": "^0.4.0",
+    "gulp-uglify": "^0.3.0",
+    "gulp-uncss": "^0.4.4",
+    "gulp-useref": "^0.4.3",
+    "jshint-stylish": "^0.2.0",
+    "opn": "^0.1.1",
+    "psi": "^0.0.4",
+    "run-sequence": "^0.3.6"
   },
   "scripts": {
     "postinstall": "bower install",
 
-    "prestart": "npm install",
-    "start": "http-server -a localhost -p 8000"
+    "test": "gulp && git status"
   }
 }
