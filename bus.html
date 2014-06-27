@@ -42,7 +42,7 @@
 <div id="subscribe" class="box" style="position:absolute;left:450px;top:40px">
 
   <form onsubmit="return false;">
-    Address:<input type="text" id="subscribeAddress" value="someaddress"/>
+    Topic:<input type="text" id="subscribeTopic" value="sometopic"/>
     <input type="button" id="subscribeButton" value="Subscribe"/>
   </form>
   Subscriptions:
@@ -53,7 +53,7 @@
 <div id="send" class="box" style="position:absolute;left:0px;top:350px">
 
   <form onsubmit="return false;">
-    Address:<input type="text" id="sendAddress" value="someaddress"/><br>
+    Topic:<input type="text" id="sendTopic" value="sometopic"/><br>
     Message:<input type="text" id="sendMessage" value="Hello, World!"/>
     <input type="button" id="sendButton" value="Send message"/>
   </form>
@@ -76,32 +76,32 @@
 
   var bus = null;
 
-  function publish(address,  message) {
+  function publish(topic,  message) {
     if (bus) {
       var json = {text: message};
-      bus.publish(address, json);
-      /*bus.send(address, json, function(message) {
+      bus.publish(topic, json);
+      /*bus.send(topic, json, function(message) {
         message.reply({end: "reply"});
       });*/
-      $('#sent').append($("<code>").text("Address:" + address + " Message:" + JSON.stringify(json)));
+      $('#sent').append($("<code>").text("Topic:" + topic + " Message:" + JSON.stringify(json)));
       $('#sent').append($("</code><br>"));
     }
   }
 
-  function subscribe(address) {
+  function subscribe(topic) {
     if (bus) {
-      window.registration = bus.registerHandler(address, function(message) {
+      window.registration = bus.subscribe(topic, function(message) {
         window.message = message;
-        $('#received').append("Address:" + address + " Message:" + JSON.stringify(message.body()) + "<br>");
+        $('#received').append("Topic:" + topic + " Message:" + JSON.stringify(message.body()) + "<br>");
         var f = function(message) {
           console.log(JSON.stringify(message.body()));
         };
         message.reply({a:"b"}, f);
       });
-      $('#subscribed').append($("<code>").text("Address:" + address));
+      $('#subscribed').append($("<code>").text("Topic:" + topic));
       $('#subscribed').append($("</code><br>"));
       
-      // You can unregister the handler like this:
+      // You can unsubscribe the topic like this:
       // registration.unregister();
     }
   }
@@ -120,35 +120,35 @@
       var options = {debug:true, forkLocal:true};
       bus = new realtime.channel.ReconnectBus(server, options);
 
-      bus.registerLocalHandler("@realtime/bus/onOpen", function(message) {
+      bus.subscribeLocal("@realtime/bus/onOpen", function(message) {
         $("#status_info").text("Connected");
         console.log("Opened at: " + new Date().toString());
       });
 
-      bus.registerLocalHandler("@realtime/bus/onClose", function(message) {
+      bus.subscribeLocal("@realtime/bus/onClose", function(message) {
         $("#status_info").text("Not connected");
         console.log("Closed at: " + new Date().toString());
       });
       
-      bus.registerLocalHandler("@realtime/bus/onError", function(error) {
+      bus.subscribeLocal("@realtime/bus/onError", function(error) {
         console.log("Error at: " + error);
       });
     }
   }
 
   $(document).ready(function() {
-    var server = "http://realtime.goodow.com:1986/channel";
+    var server = "https://realtime.goodow.com/channel";
     var hash = window.location.hash;
     if (hash) {
       server = hash.substring(hash.indexOf('=') + 1);
     }
     $('#server').val(server);
     $("#sendButton").click(function() {
-      publish($("#sendAddress").val(), $("#sendMessage").val());
+      publish($("#sendTopic").val(), $("#sendMessage").val());
     });
 
     $("#subscribeButton").click(function() {
-      subscribe($("#subscribeAddress").val());
+      subscribe($("#subscribeTopic").val());
     });
 
     $("#closeButton").click(function() {
