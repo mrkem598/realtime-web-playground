@@ -138,7 +138,7 @@ rtpg.registerTypes = function() {
 // Initializes the Realtime Playground.
 rtpg.start = function() {
   rtpg.registerTypes();
-  window.store = new realtime.store.StoreImpl("https://realtime.goodow.com:1986/channel", null);
+  window.store = new realtime.store.StoreImpl("https://realtime.goodow.com/channel", null);
   window.bus = store.getBus();
   store.load("playground/0", rtpg.onFileLoaded, rtpg.initializeModel, rtpg.handleErrors);
 };
