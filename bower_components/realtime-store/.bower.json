@@ -2,7 +2,8 @@
   "name": "realtime-store",
   "main": "./realtime-store.js",
   "dependencies": {
-    "bower-sockjs-client": "0.3.4"
+    "bower-sockjs-client": "0.3.4",
+    "google-diff-match-patch-js": "1.0.0"
   },
   "homepage": "https://github.com/goodow/bower-realtime-store",
   "authors": [
@@ -18,11 +19,11 @@
     "gwt"
   ],
   "license": "Apache 2.0",
-  "_release": "b60a6cab4e",
+  "_release": "0ce6ace7a2",
   "_resolution": {
     "type": "branch",
     "branch": "gh-pages",
-    "commit": "b60a6cab4ea5610b70c090150fe40fdd53c79dc2"
+    "commit": "0ce6ace7a21e9b8ede62144b7ea6d62ab0d2cd86"
   },
   "_source": "git://github.com/goodow/bower-realtime-store.git",
   "_target": "gh-pages",

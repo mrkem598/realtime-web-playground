@@ -140,7 +140,7 @@ rtpg.start = function() {
   rtpg.registerTypes();
   window.store = new realtime.store.StoreImpl("http://realtime.goodow.com:1986/channel", null);
   window.bus = store.getBus();
-  store.load("test/playground", rtpg.onFileLoaded, rtpg.initializeModel, rtpg.handleErrors);
+  store.load("playground/0", rtpg.onFileLoaded, rtpg.initializeModel, rtpg.handleErrors);
 };
 
 // Returns the collaborator for the given session ID.
