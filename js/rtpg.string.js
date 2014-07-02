@@ -47,6 +47,8 @@ rtpg.string.INPUT_SELECTOR = '#demoStringInput';
 
 rtpg.string.loadField = function() {
   rtpg.string.field = rtpg.getField(rtpg.string.FIELD_NAME);
+  rtpg.string.referenceStart = rtpg.string.field.registerReference(0, false);
+  rtpg.string.referenceEnd = rtpg.string.field.registerReference(0, false);
 }
 
 rtpg.string.initializeModel = function(model) {
@@ -66,11 +68,44 @@ rtpg.string.onInput = function(evt) {
 rtpg.string.onRealtimeInsert = function(evt) {
   rtpg.string.updateUi();
   rtpg.log.logEvent(evt, "String Inserted");
+  rtpg.string.updateCursor(evt);
 };
 
 rtpg.string.onRealtimeDelete = function(evt) {
   rtpg.string.updateUi();
   rtpg.log.logEvent(evt, "String Deleted");
+  rtpg.string.updateCursor(evt);
+};
+
+rtpg.string.updateCursor = function(evt) {
+  if(!evt.isLocal() && $(rtpg.string.INPUT_SELECTOR).get(0).setSelectionRange) {
+    $(rtpg.string.INPUT_SELECTOR).get(0).setSelectionRange(rtpg.string.referenceStart.index(), rtpg.string.referenceEnd.index());
+  }
+}
+
+rtpg.string.onReferenceStartShifted = function(evt) {
+  if ($(rtpg.string.INPUT_SELECTOR).get(0).selectionStart != $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd) {
+    rtpg.log.logEvent(evt, "Selection Start Postion Shifted");
+  }
+};
+
+rtpg.string.onReferenceEndShifted = function(evt) {
+  if ($(rtpg.string.INPUT_SELECTOR).get(0).selectionStart == $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd) {
+    rtpg.log.logEvent(evt, "Cursor Position Shifted");
+  } else {
+    rtpg.log.logEvent(evt, "Selection End Postion Shifted");
+  }
+};
+
+rtpg.string.updateReference = function(evt) {
+  var indexStart = $(rtpg.string.INPUT_SELECTOR).get(0).selectionStart;
+  var indexEnd = $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd;
+  if (rtpg.string.referenceEnd.index() != indexEnd) {
+    rtpg.string.referenceEnd.setIndex(indexEnd);
+  }
+  if (rtpg.string.referenceStart.index() != indexStart) {
+    rtpg.string.referenceStart.setIndex(indexStart);
+  }
 };
 
 rtpg.string.connectUi = function() {
@@ -82,4 +117,6 @@ rtpg.string.connectUi = function() {
 rtpg.string.connectRealtime = function() {
   rtpg.string.field.onTextInserted(rtpg.string.onRealtimeInsert);
   rtpg.string.field.onTextDeleted(rtpg.string.onRealtimeDelete);
+  rtpg.string.referenceStart.onReferenceShifted(rtpg.string.onReferenceStartShifted);
+  rtpg.string.referenceEnd.onReferenceShifted(rtpg.string.onReferenceEndShifted);
 };

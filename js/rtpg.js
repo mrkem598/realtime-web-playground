@@ -99,6 +99,7 @@ rtpg.onFileLoaded = function(doc) {
     $('#redoButton').prop('disabled', !e.canRedo());
   };
   model.onUndoRedoStateChanged(onUndoRedoStateChanged);
+  onUndoRedoStateChanged(model);
 
   // Enable Step 3 and 4
   $(rtpg.SHARE_DOC_HOLDER_SELECTOR).removeClass('disabled');
