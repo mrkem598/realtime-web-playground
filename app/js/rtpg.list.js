@@ -198,14 +198,6 @@ rtpg.list.onRealtimeSet = function(evt) {
   rtpg.log.logEvent(evt, 'List Item Set');
 };
 
-rtpg.list.connectUi = function() {
-  $(rtpg.list.INPUT_SELECTOR).change(rtpg.list.onSelect);
-  $(rtpg.list.ADD_SELECTOR).click(rtpg.list.onAddItem);
-  $(rtpg.list.REMOVE_SELECTOR).click(rtpg.list.onRemoveItem);
-  $(rtpg.list.CLEAR_SELECTOR).click(rtpg.list.onClearList);
-  $(rtpg.list.SET_SELECTOR).click(rtpg.list.onSetItem);
-};
-
 rtpg.list.onRealtimeReferenceShifted = function (evt) {
   var log = rtpg.getCollaborator(evt.sessionId()).displayName() + ' moved cursor from ' + evt.oldIndex() +' to ' + evt.newIndex();
   rtpg.log.logEvent(evt, log);
@@ -214,12 +206,13 @@ rtpg.list.onRealtimeReferenceShifted = function (evt) {
 
 rtpg.list.onRealtimeCursorChange = function (evt) {
   console.log('Cursor Change Event');
-  evt.newValue().onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
+  if (evt.newValue()) {
+    evt.newValue().onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
+  }
   rtpg.list.updateUi();
 };
 
 rtpg.list.connectUi = function() {
-  $(rtpg.list.INPUT_SELECTOR + ' li').on('click', rtpg.list.onSelect);
   $(rtpg.list.ADD_SELECTOR).on('click', rtpg.list.onAddItem);
   $(rtpg.list.REMOVE_SELECTOR).on('click', rtpg.list.onRemoveItem);
   $(rtpg.list.CLEAR_SELECTOR).on('click', rtpg.list.onClearList);
