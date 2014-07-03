@@ -206,7 +206,9 @@ rtpg.list.onRealtimeReferenceShifted = function (evt) {
 
 rtpg.list.onRealtimeCursorChange = function (evt) {
   console.log('Cursor Change Event');
-  evt.newValue().onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
+  if (evt.newValue()) {
+    evt.newValue().onReferenceShifted(rtpg.list.onRealtimeReferenceShifted);
+  }
   rtpg.list.updateUi();
 };
 
