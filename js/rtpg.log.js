@@ -27,7 +27,7 @@ rtpg.log = rtpg.log || {};
 rtpg.log.LOG_CONTAINER_SELECTOR = '#demoLog';
 
 rtpg.log.createLogEntryElement = function(msg) {
-  var img = $('<img>').attr('src', msg.picUrl).attr('alt', msg.userName).attr('title', msg.userName);
+  var img = $('<img>').attr('src', msg.picUrl).attr('alt', msg.userName).attr('title', msg.userName).css('background-color', msg.color);
   return $('<tr>'
     ).append($('<td>').attr('class', 'color').text('\xa0').css('background-color', msg.color)
     ).append($('<td>').attr('class', 'icons').append(img)
@@ -39,7 +39,7 @@ rtpg.log.createLogEntryElement = function(msg) {
 
 
 rtpg.log.logEvent = function(evt, eventType) {
-  var collaborator = rtpg.getCollaborator(evt.sessionId ? evt.sessionId() : null);
+  var collaborator = evt.sessionId ? rtpg.getCollaborator(evt.sessionId()) : null;
   
   var eventDetails;
   // Collab String events
