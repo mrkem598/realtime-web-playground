@@ -32,8 +32,6 @@ rtpg.string.FIELD_NAME = 'demo_string';
  * Realtime model's field for String Demo.
  */
 rtpg.string.field = null;
-rtpg.string.referenceStart = null;
-rtpg.string.referenceEnd = null;
 
 /**
  * Starting value of field for String Demo.
@@ -41,82 +39,43 @@ rtpg.string.referenceEnd = null;
 rtpg.string.START_VALUE = 'Edit Me!';
 
 /**
- * DOM selector for the input element for String Demo.
+ * DOM id for the input element for String Demo.
  */
-rtpg.string.INPUT_SELECTOR = '#demoStringInput';
+rtpg.string.INPUT_SELECTOR = 'demoStringInput';
 
 rtpg.string.loadField = function() {
   rtpg.string.field = rtpg.getField(rtpg.string.FIELD_NAME);
-  rtpg.string.referenceStart = rtpg.string.field.registerReference(0, false);
-  rtpg.string.referenceEnd = rtpg.string.field.registerReference(0, false);
-}
+};
 
 rtpg.string.initializeModel = function(model) {
   var field = model.createString(rtpg.string.START_VALUE);
   model.getRoot().set(rtpg.string.FIELD_NAME, field);
-}
-
-rtpg.string.updateUi = function() {
-  $(rtpg.string.INPUT_SELECTOR).val(rtpg.string.field.getText());
 };
 
-rtpg.string.onInput = function(evt) {
-  var newValue = $(rtpg.string.INPUT_SELECTOR).val();
-  rtpg.string.field.setText(newValue);
+rtpg.string.updateUi = function() {
+  var elem = document.getElementById(rtpg.string.INPUT_SELECTOR);
+  elem.value = rtpg.string.field.getText();
 };
 
 rtpg.string.onRealtimeInsert = function(evt) {
-  rtpg.string.updateUi();
   rtpg.log.logEvent(evt, "String Inserted");
-  rtpg.string.updateCursor(evt);
 };
 
 rtpg.string.onRealtimeDelete = function(evt) {
-  rtpg.string.updateUi();
   rtpg.log.logEvent(evt, "String Deleted");
-  rtpg.string.updateCursor(evt);
-};
-
-rtpg.string.updateCursor = function(evt) {
-  if(!evt.isLocal() && $(rtpg.string.INPUT_SELECTOR).get(0).setSelectionRange) {
-    $(rtpg.string.INPUT_SELECTOR).get(0).setSelectionRange(rtpg.string.referenceStart.index(), rtpg.string.referenceEnd.index());
-  }
-}
-
-rtpg.string.onReferenceStartShifted = function(evt) {
-  if ($(rtpg.string.INPUT_SELECTOR).get(0).selectionStart != $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd) {
-    rtpg.log.logEvent(evt, "Selection Start Postion Shifted");
-  }
-};
-
-rtpg.string.onReferenceEndShifted = function(evt) {
-  if ($(rtpg.string.INPUT_SELECTOR).get(0).selectionStart == $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd) {
-    rtpg.log.logEvent(evt, "Cursor Position Shifted");
-  } else {
-    rtpg.log.logEvent(evt, "Selection End Postion Shifted");
-  }
-};
-
-rtpg.string.updateReference = function(evt) {
-  var indexStart = $(rtpg.string.INPUT_SELECTOR).get(0).selectionStart;
-  var indexEnd = $(rtpg.string.INPUT_SELECTOR).get(0).selectionEnd;
-  if (rtpg.string.referenceEnd.index() != indexEnd) {
-    rtpg.string.referenceEnd.setIndex(indexEnd);
-  }
-  if (rtpg.string.referenceStart.index() != indexStart) {
-    rtpg.string.referenceStart.setIndex(indexStart);
-  }
 };
 
 rtpg.string.connectUi = function() {
-  $(rtpg.string.INPUT_SELECTOR).keyup(rtpg.string.onInput);
-  $(rtpg.string.INPUT_SELECTOR).click(rtpg.string.updateReference);
-  $(rtpg.string.INPUT_SELECTOR).keyup(rtpg.string.updateReference);
+  var elem = document.getElementById(rtpg.string.INPUT_SELECTOR);
+  realtime.store.databinding.bindString(rtpg.string.field, elem);
+
+  setTimeout(function() {
+    $('#undoButton').click(function(){rtpg.string.updateUi();});
+    $('#redoButton').click(function(){rtpg.string.updateUi();});
+  }, 0);
 };
 
 rtpg.string.connectRealtime = function() {
   rtpg.string.field.onTextInserted(rtpg.string.onRealtimeInsert);
   rtpg.string.field.onTextDeleted(rtpg.string.onRealtimeDelete);
-  rtpg.string.referenceStart.onReferenceShifted(rtpg.string.onReferenceStartShifted);
-  rtpg.string.referenceEnd.onReferenceShifted(rtpg.string.onReferenceEndShifted);
 };
