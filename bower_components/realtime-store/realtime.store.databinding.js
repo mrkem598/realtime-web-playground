@@ -6,7 +6,6 @@
  * A namespace that includes classes and methods for binding collaborative objects to UI elements.
  */
 realtime.store.databinding = realtime.store.databinding || {};
-realtime.store.databinding.EVENT_NAMES = ['textInput', 'keydown', 'keyup', 'select', 'cut', 'paste'];
 
 /**
  * Binds a text input element to an collaborative string. Once bound, any change to the
@@ -29,29 +28,30 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
     throw new TypeError("Expected text or textarea element for string, but was: "+ textInputElement
                             + ".");
   }
-  textInputElement.value = string.getText();
 
-  // The current value of the element's text is stored so we can quickly check
-  // if its been changed in the event handlers.
+  // The current value of the element's text is stored so we can quickly check if its been changed
+  // in the event handlers. This is mostly for browsers on windows, where the content contains \r\n
+  // newlines. applyChange() is only called after the \r\n newlines are converted, and that check is
+  // quite slow. So we also cache the string before conversion so we can do a quick check incase the
+  // conversion isn't needed.
   var prevvalue;
-  // Replace the content of the text area with newText, and transform the
-  // current cursor by the specified function.
+  // Replace the content of the text area with newText, and transform the current cursor by the
+  // specified function.
   var replaceText = function(newText, transformCursor) {
     if (transformCursor) {
       var newSelection = [transformCursor(textInputElement.selectionStart),
                           transformCursor(textInputElement.selectionEnd)];
     }
 
-    // Fixate the window's scroll while we set the element's value. Otherwise
-    // the browser scrolls to the element.
+    // Fixate the window's scroll while we set the element's value. Otherwise the browser scrolls
+    // to the element.
     var scrollTop = textInputElement.scrollTop;
     textInputElement.value = newText;
     prevvalue = textInputElement.value; // Not done on one line so the browser can do newline conversion.
     if (textInputElement.scrollTop !== scrollTop) textInputElement.scrollTop = scrollTop;
 
-    // Setting the selection moves the cursor. We'll just have to let your
-    // cursor drift if the element isn't active, though usually users don't
-    // care.
+    // Setting the selection moves the cursor. We'll just have to let your cursor drift if the
+    // element isn't active, though usually users don't care.
     if (newSelection && window.document.activeElement === textInputElement) {
       textInputElement.selectionStart = newSelection[0];
       textInputElement.selectionEnd = newSelection[1];
@@ -65,52 +65,59 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
     var transformCursor = function(cursor) {
       return evt.index() < cursor ? cursor + evt.text().length : cursor;
     };
-    var prev = textInputElement.value.replace(/\r\n/g, '\n');
-    replaceText(prev.slice(0, evt.index()) + evt.text() + prev.slice(evt.index()), transformCursor);
+//    var prev = textInputElement.value.replace(/\r\n/g, '\n');
+//    replaceText(prev.slice(0, evt.index()) + evt.text() + prev.slice(evt.index()), transformCursor);
+    replaceText(string.getText(), transformCursor);
   });
 
   var textDeletedRegistration = string.onTextDeleted(function(evt) {
     if (evt.isLocal()) return;
     var transformCursor = function(cursor) {
-      // If the cursor is inside the deleted region, we only want to move back to the start
-      // of the region. Hence the Math.min.
+      // If the cursor is inside the deleted region, we only want to move back to the start of the
+      // region. Hence the Math.min.
       return evt.index() < cursor ? cursor - Math.min(evt.text().length, cursor - evt.index())
           : cursor;
     };
-    var prev = textInputElement.value.replace(/\r\n/g, '\n');
-    replaceText(prev.slice(0, evt.index()) + prev.slice(evt.index() + evt.text().length)
-        , transformCursor);
+//    var prev = textInputElement.value.replace(/\r\n/g, '\n');
+//    replaceText(prev.slice(0, evt.index()) + prev.slice(evt.index() + evt.text().length)
+//        , transformCursor);
+    replaceText(string.getText(), transformCursor);
   });
 
 
   // *** local -> remote changes
   /**
    * applyChange creates the edits to convert oldval -> newval.
-   * This function should be called every time the text element is changed.
+   *
+   * This function should be called every time the text element is changed. Because changes are
+   * always localised, the diffing is quite easy. We simply scan in from the start and scan in from
+   * the end to isolate the edited range, then delete everything that was removed & add everything
+   * that was added. This wouldn't work for complex changes, but this function should be called on
+   * keystroke - so the edits will mostly just be single character changes. Sometimes they'll paste
+   * text over other text, but even then the diff generated by this algorithm is correct.
+   *
+   * This algorithm is O(N). I suspect you could speed it up somehow using regular expressions.
    */
-  var applyChange = function(string, before, after) {
+  var applyChange = function(string, oldval, newval) {
     // Strings are immutable and have reference equality. I think this test is O(1), so its worth doing.
-    if (before === after) return;
+    if (oldval === newval) return;
 
-    var dmp = new window.diff_match_patch();
-    var diffs = dmp.diff_main(before, after);
-    dmp.diff_cleanupSemantic(diffs);
-    var cursor = 0;
-    for (var i in diffs) {
-      var text = diffs[i][1], len = text.length;
-      switch (diffs[i][0]) {
-        case 0:
-          cursor += len;
-          break;
-        case 1:
-          string.insertString(cursor, text);
-          cursor += len;
-          break;
-        case -1:
-          string.removeRange(cursor, cursor + len);
-          break;
-        default:
-      }
+    var commonStart = 0;
+    while (oldval.charAt(commonStart) === newval.charAt(commonStart)) {
+      commonStart++;
+    }
+
+    var commonEnd = 0;
+    while (oldval.charAt(oldval.length - 1 - commonEnd) === newval.charAt(newval.length - 1 - commonEnd) &&
+           commonEnd + commonStart < oldval.length && commonEnd + commonStart < newval.length) {
+      commonEnd++;
+    }
+
+    if (oldval.length !== commonStart + commonEnd) {
+      string.removeRange(commonStart, oldval.length - commonEnd);
+    }
+    if (newval.length !== commonStart + commonEnd) {
+      string.insertString(commonStart, newval.slice(commonStart, newval.length - commonEnd));
     }
   };
 
@@ -120,13 +127,15 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
     setTimeout(function() {
       if (textInputElement.value !== prevvalue) {
         prevvalue = textInputElement.value;
-        applyChange(string, string.getText(), textInputElement.value.replace(/\r\n/g, '\n'));
+//        applyChange(string, string.getText(), textInputElement.value.replace(/\r\n/g, '\n'));
+        string.setText(textInputElement.value);
       }
     }, 0);
   };
 
-  for (var i = 0; i < realtime.store.databinding.EVENT_NAMES.length; i++) {
-    var e = realtime.store.databinding.EVENT_NAMES[i];
+  var eventNames = ['textInput', 'keydown', 'keyup', 'select', 'cut', 'paste'];
+  for (var i = 0; i < eventNames.length; i++) {
+    var e = eventNames[i];
     if (textInputElement.addEventListener) {
       textInputElement.addEventListener(e, genOp, false);
     } else {
@@ -138,8 +147,8 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
   binding.unbind = function() {
     textInsertedRegistration.unregister();
     textDeletedRegistration.unregister();
-    for (var i = 0; i < realtime.store.databinding.EVENT_NAMES.length; i++) {
-      var e = realtime.store.databinding.EVENT_NAMES[i];
+    for (var i = 0; i < eventNames.length; i++) {
+      var e = eventNames[i];
       if (this.domElement.removeEventListener) {
         this.domElement.removeEventListener(e, genOp, false);
       } else {
