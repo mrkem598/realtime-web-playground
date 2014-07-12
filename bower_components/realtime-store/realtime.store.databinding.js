@@ -65,9 +65,9 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
     var transformCursor = function(cursor) {
       return evt.index() < cursor ? cursor + evt.text().length : cursor;
     };
-//    var prev = textInputElement.value.replace(/\r\n/g, '\n');
-//    replaceText(prev.slice(0, evt.index()) + evt.text() + prev.slice(evt.index()), transformCursor);
-    replaceText(string.getText(), transformCursor);
+    var prev = textInputElement.value.replace(/\r\n/g, '\n');
+    replaceText(prev.slice(0, evt.index()) + evt.text() + prev.slice(evt.index()), transformCursor);
+//    replaceText(string.getText(), transformCursor);
   });
 
   var textDeletedRegistration = string.onTextDeleted(function(evt) {
@@ -78,10 +78,10 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
       return evt.index() < cursor ? cursor - Math.min(evt.text().length, cursor - evt.index())
           : cursor;
     };
-//    var prev = textInputElement.value.replace(/\r\n/g, '\n');
-//    replaceText(prev.slice(0, evt.index()) + prev.slice(evt.index() + evt.text().length)
-//        , transformCursor);
-    replaceText(string.getText(), transformCursor);
+    var prev = textInputElement.value.replace(/\r\n/g, '\n');
+    replaceText(prev.slice(0, evt.index()) + prev.slice(evt.index() + evt.text().length)
+        , transformCursor);
+//    replaceText(string.getText(), transformCursor);
   });
 
 
@@ -128,7 +128,7 @@ realtime.store.databinding.bindString = function(string, textInputElement) {
       if (textInputElement.value !== prevvalue) {
         prevvalue = textInputElement.value;
 //        applyChange(string, string.getText(), textInputElement.value.replace(/\r\n/g, '\n'));
-        string.setText(textInputElement.value);
+        string.setText(textInputElement.value.replace(/\r\n/g, '\n'));
       }
     }, 0);
   };

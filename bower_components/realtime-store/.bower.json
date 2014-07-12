@@ -19,11 +19,11 @@
     "gwt"
   ],
   "license": "Apache 2.0",
-  "_release": "2eec61fcac",
+  "_release": "9888f8ea04",
   "_resolution": {
     "type": "branch",
     "branch": "gh-pages",
-    "commit": "2eec61fcac96cc628770dd3ad9f03a40471228a3"
+    "commit": "9888f8ea04708408b2fbaf0aea5c6ec63f13255e"
   },
   "_source": "git://github.com/goodow/bower-realtime-store.git",
   "_target": "gh-pages",
