@@ -15,11 +15,11 @@
     "GWT"
   ],
   "license": "Apache 2.0",
-  "_release": "d386fe68b4",
+  "_release": "4092f2f10a",
   "_resolution": {
     "type": "branch",
     "branch": "gh-pages",
-    "commit": "d386fe68b44d823e6bb2c3002b375f689aaad4b5"
+    "commit": "4092f2f10a86170fcdd4338c360b304080a3fd07"
   },
   "_source": "git://github.com/goodow/bower-realtime-channel.git",
   "_target": "gh-pages",
