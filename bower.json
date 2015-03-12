@@ -7,6 +7,7 @@
     "realtime-channel": "gh-pages",
     "realtime-store": "gh-pages",
     "vertxbus": "v2.1",
-    "google-diff-match-patch-js": "1.0.0"
+    "google-diff-match-patch-js": "1.0.0",
+    "jquery": "2.1.3"
   }
 }
